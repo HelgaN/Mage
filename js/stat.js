@@ -7,8 +7,6 @@ window.renderStatistics = function(ctx, names, times) {
   ctx.fillStyle = "rgba(255, 255, 255, 1)";
   ctx.fillRect(100, 10, 520, 280);
 
-  console.log(times);
-
   ctx.fillStyle = "black";
   ctx.font = "16px PT Mono";
   ctx.fillText("Ура вы победили!", 265, 50);
@@ -17,11 +15,11 @@ window.renderStatistics = function(ctx, names, times) {
   var max = -1;
   var maxIndex = -1;
 
-  for(var i = 0; i < times.length; i++) {
+  for (var i = 0; i < times.length; i++) {
     var time = times[i];
-    if(time > max) {
-     max = time;
-     maxIndex = i;
+    if (time > max) {
+      max = time;
+      maxIndex = i;
     }
   }
 
@@ -30,16 +28,26 @@ window.renderStatistics = function(ctx, names, times) {
 
   ctx.fillText("Худшее время" + max.toFixed(0) + "мс у игрока " + names[maxIndex], 120, 90);
 
-  ctx.fillStyle = "blue";
-  ctx.fillRect(150, 100, 40, times[0] * step);
+  for (var i = 0; i < times.length; i++) {
+    var initialX = 150;
+    var initialY = 260;
+    var widthCol = 40;
+    var indent = 90 // отступ между колонками
+    var initialXText = 150;
+    var initialYText = 180;
+    var indentText = 90;
+    var max = 1;
+    var min = 0.1;
+    var transp = Math.random() * (max - min) + min;
 
-  /*ctx.fillRect(120, 80, times[0] * step, 20);*/
-  ctx.fillStyle = "yellow";
-  ctx.fillRect(240, 100, 40, times[1] * step);
-
- /* ctx.fillRect(120, 110, times[1] * step, 20);*/
-  ctx.fillStyle = "red";
-  ctx.fillRect(330, 100, 40, times[2] * step);
- /* ctx.fillRect(120, 140, times[2] * step, 20);*/
-
-};
+    if (names[i] == "Вы") {
+      ctx.fillStyle = "rgba(255, 0, 0, 1)";
+      ctx.fillRect(initialX + indent * i, initialY, widthCol, -(times[i] * step));
+    } else {
+      ctx.fillStyle = "rgba(0, 0 ,255 , " + transp + ")"; 
+      ctx.fillRect(initialX + indent * i, initialY, widthCol, -(times[i] * step));
+    }
+    ctx.fillStyle = "black";
+    ctx.fillText(names[i], initialXText + indentText * i, 280);
+  }
+}
