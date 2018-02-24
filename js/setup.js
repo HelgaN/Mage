@@ -36,12 +36,16 @@ if(evt.keyCode === ENTER_CODE) {
 
 userWindClose.addEventListener("click", function() {
   closePopup();
+  userWind.style.top = 80 + "px";
+  userWind.style.left = 50 + "%";
 })
 
 userWindClose.addEventListener("keydown", function(evt) {
 var focusedElem = document.querySelector(":focus");
 if(evt.keyCode === ESC_CODE || (evt.keyCode === ENTER_CODE && focusedElem == userWindClose)) {
     closePopup();
+    userWind.style.top = 80 + "px";
+    userWind.style.left = 50 + "%";
  }
 })
 
@@ -124,3 +128,43 @@ for(var i=0; i < wizards.length; i++) {
 }
 
 similarListElement.appendChild(fragment);
+
+var shopElement = document.querySelector(".setup-artifacts-shop");
+var draggedItem = null;
+
+shopElement.addEventListener("dragstart", function(evt) {
+  if(evt.target.tagName.toLowerCase() === "img") {
+    draggedItem = evt.target.cloneNode(true);
+    evt.dataTransfer.setData("text/plain", evt.target.alt);
+    evt.target.appendChild(draggedItem.cloneNode(true));
+  }
+});
+
+var artifactsElement = document.querySelector(".setup-artifacts");
+
+artifactsElement.addEventListener("dragover", function(evt) {
+  evt.preventDefault();
+  return false;
+});
+
+artifactsElement.addEventListener("drop", function(evt) {   // переложили элемент в ячейку
+  evt.target.style.backgroundColor = "";
+  evt.target.style.outline = "";
+  if (evt.target.hasChildNodes()) {                         // запрет на дублирование элементов в ячейке
+    return false;
+  }
+  evt.target.appendChild(draggedItem);
+  evt.preventDefault();
+});
+
+artifactsElement.addEventListener("dragenter", function(evt) {
+  evt.target.style.backgroundColor = "yellow";
+  evt.target.style.outline = "2px dashed red";
+  evt.preventDefault();
+});
+
+artifactsElement.addEventListener("dragleave", function(evt) {
+  evt.target.style.backgroundColor = "";
+  evt.target.style.outline = "";
+  evt.preventDefault();
+});
