@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; 
 var ESC_CODE = 27;
 var ENTER_CODE = 13;
 var userWind = document.querySelector(".setup");
@@ -150,7 +150,8 @@ artifactsElement.addEventListener("dragover", function(evt) {
 artifactsElement.addEventListener("drop", function(evt) {   // переложили элемент в ячейку
   evt.target.style.backgroundColor = "";
   evt.target.style.outline = "";
-  if (evt.target.hasChildNodes()) {                         // запрет на дублирование элементов в ячейке
+  if (evt.target.hasChildNodes()) {
+    evt.preventDefault();                       // запрет на дублирование элементов в ячейке
     return false;
   }
   evt.target.appendChild(draggedItem);
