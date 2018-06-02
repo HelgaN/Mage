@@ -1,4 +1,4 @@
-"use strict"; 
+"use strict";
 var ESC_CODE = 27;
 var ENTER_CODE = 13;
 var userWind = document.querySelector(".setup");
@@ -7,9 +7,9 @@ var userWindClose = document.querySelector(".setup-close");
 var userName = document.querySelector(".setup-user-name");
 var buttonSave = document.querySelector(".setup-submit");
 
-var onPopupEscPress = function(evt){
+var onPopupEscPress = function(evt) {
   var focusedElem = document.querySelector(":focus");
-  if (evt.keyCode === ESC_CODE && focusedElem!=userName) {
+  if (evt.keyCode === ESC_CODE && focusedElem != userName) {
     closePopup();
   }
 }
@@ -29,9 +29,9 @@ userWindOpen.addEventListener("click", function() {
 })
 
 userWindOpen.addEventListener("keydown", function(evt) {
-if(evt.keyCode === ENTER_CODE) {
- openPopup();
-}
+  if (evt.keyCode === ENTER_CODE) {
+    openPopup();
+  }
 })
 
 userWindClose.addEventListener("click", function() {
@@ -41,12 +41,12 @@ userWindClose.addEventListener("click", function() {
 })
 
 userWindClose.addEventListener("keydown", function(evt) {
-var focusedElem = document.querySelector(":focus");
-if(evt.keyCode === ESC_CODE || (evt.keyCode === ENTER_CODE && focusedElem == userWindClose)) {
+  var focusedElem = document.querySelector(":focus");
+  if (evt.keyCode === ESC_CODE || (evt.keyCode === ENTER_CODE && focusedElem == userWindClose)) {
     closePopup();
     userWind.style.top = 80 + "px";
     userWind.style.left = 50 + "%";
- }
+  }
 })
 
 document.querySelector(".setup-similar").classList.remove("hidden");
@@ -80,11 +80,10 @@ fireball.addEventListener("click", function(evt) {
 });
 
 Array.prototype.rand = function() {
-    return this[Math.floor(Math.random() * this.length)];
+  return this[Math.floor(Math.random() * this.length)];
 }
 
-var wizards =[
-  {
+var wizards = [{
     name: WIZARD_NAMES.rand(),
     surname: WIZARD_SURMAMES.rand(),
     coatColor: COATS_COLOR.rand(),
@@ -120,10 +119,9 @@ var renderWizard = function(wizards) {
   return wizardElement;
 }
 
-
 var fragment = document.createDocumentFragment();
 
-for(var i=0; i < wizards.length; i++) {
+for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(renderWizard(wizards[i]));
 }
 
@@ -133,7 +131,7 @@ var shopElement = document.querySelector(".setup-artifacts-shop");
 var draggedItem = null;
 
 shopElement.addEventListener("dragstart", function(evt) {
-  if(evt.target.tagName.toLowerCase() === "img") {
+  if (evt.target.tagName.toLowerCase() === "img") {
     draggedItem = evt.target.cloneNode(true);
     evt.dataTransfer.setData("text/plain", evt.target.alt);
     evt.target.appendChild(draggedItem.cloneNode(true));
@@ -147,11 +145,11 @@ artifactsElement.addEventListener("dragover", function(evt) {
   return false;
 });
 
-artifactsElement.addEventListener("drop", function(evt) {   // переложили элемент в ячейку
+artifactsElement.addEventListener("drop", function(evt) { // переложили элемент в ячейку
   evt.target.style.backgroundColor = "";
   evt.target.style.outline = "";
   if (evt.target.hasChildNodes()) {
-    evt.preventDefault();                       // запрет на дублирование элементов в ячейке
+    evt.preventDefault(); // запрет на дублирование элементов в ячейке
     return false;
   }
   evt.target.appendChild(draggedItem);
