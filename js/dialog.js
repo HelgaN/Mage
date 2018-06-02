@@ -1,6 +1,6 @@
 "use strict";
 
-var dialogHandle = document.querySelector(".setup-user-pic");
+var dialogHandle = document.querySelector(".upload");
 
 dialogHandle.addEventListener("mousedown", function(evt) {
   evt.preventDefault();
@@ -10,8 +10,11 @@ dialogHandle.addEventListener("mousedown", function(evt) {
     y: evt.clientY
   };
 
+  var dragged = false;   // The solution of the conflict download avatars and move popup
+
   var onMouseMove = function(moveEvt) {
     moveEvt.preventDefault();
+    dragged = true;
 
     var shift = {
       x: initCoords.x - moveEvt.clientX,
@@ -32,6 +35,14 @@ dialogHandle.addEventListener("mousedown", function(evt) {
 
     document.removeEventListener("mousemove", onMouseMove);
     document.removeEventListener("mouseup", onMouseUp);
+    if(dragged) {
+      var onClickPreventDefault = function(evt) {
+        evt.preventDefault();
+        dragged = false;
+        dialogHandle.removeEventListener("click", onClickPreventDefault);
+      };
+    dialogHandle.addEventListener("click", onClickPreventDefault);
+    }
   }
 
   document.addEventListener("mousemove", onMouseMove);
