@@ -131,7 +131,7 @@ var wizards = [{
     eyesColor: EYES_COLOR.rand()
   }
 ];
-
+/* генерация случайных волшебников (без window.load)
 var renderWizard = function(wizards) {
   var wizardElement = similarWizardTemplate.cloneNode("true");
 
@@ -140,15 +140,50 @@ var renderWizard = function(wizards) {
   wizardElement.querySelector(".wizard-eyes").style.fill = wizards.eyesColor;
 
   return wizardElement;
+}*/
+// получаем данные с сервера + модуль load.js
+var renderWizard = function(wizards) {
+  var wizardElement = similarWizardTemplate.cloneNode("true");
+
+  wizardElement.querySelector(".setup-similar-label").textContent = wizards.name;
+  wizardElement.querySelector(".wizard-coat").style.fill = wizards.colorCoat;
+  wizardElement.querySelector(".wizard-eyes").style.fill = wizards.colorEyes;
+
+  return wizardElement;
 }
 
+var successHandler = function(wizards) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < 4; i++) {
+    fragment.appendChild(renderWizard(wizards[i]));
+  }
+
+  similarListElement.appendChild(fragment);
+  document.querySelector(".setup-similar").classList.remove("hidden");
+};
+
+var errorHandler = function(errorMessage) {
+  var node = document.createElement("div");
+  node.style = "z-index: 100; margin: 0 auto; text-align: center; background-color: red;";
+  node.style.left = "0";
+  node.style.right = "0";
+  node.style.fontSize = "30px;";
+
+  node.textContent = errorMessage;
+
+  document.body.insertAdjacentElement("afterbegin", node);
+};
+
+window.load(successHandler, errorHandler);
+/* генерация случайных волшебников (без window.load)
 var fragment = document.createDocumentFragment();
 
 for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(renderWizard(wizards[i]));
 }
 
-similarListElement.appendChild(fragment);
+similarListElement.appendChild(fragment);*/
 
 var shopElement = document.querySelector(".setup-artifacts-shop");
 var draggedItem = null;
@@ -189,4 +224,14 @@ artifactsElement.addEventListener("dragleave", function(evt) {
   evt.target.style.backgroundColor = "";
   evt.target.style.outline = "";
   evt.preventDefault();
+});
+
+var form = document.querySelector(".setup-wizard-form");
+
+form.addEventListener("submit", function(evt) {
+  evt.preventDefault();
+  window.upload(new FormData(form), function(response) {
+    userWind.classList.add("hidden");
+  });
+
 });
