@@ -90,6 +90,10 @@ var changeElementBackground = function(element, color) {
 
 wizardCoat.addEventListener("click", function() {
   colorizeElement(wizardCoat, ["rgb(101, 137, 164)", "rgb(241, 43, 107)", "rgb(146, 100, 161)", "rgb(56, 159, 117)", "rgb(215, 210, 55)", "rgb(0, 0, 0)"], fillElement);
+  while (similarListElement.firstChild) {
+    similarListElement.removeChild(similarListElement.firstChild);
+  }
+  updateWizards();
 });
 
 wizardEyes.addEventListener("click", function(evt) {
@@ -101,7 +105,8 @@ fireball.addEventListener("click", function(evt) {
   changeElementBackground);
 });
 
-
+var wizards = [];
+/*
 Array.prototype.rand = function() {
   return this[Math.floor(Math.random() * this.length)];
 }
@@ -130,7 +135,8 @@ var wizards = [{
     coatColor: COATS_COLOR.rand(),
     eyesColor: EYES_COLOR.rand()
   }
-];
+];*/
+
 /* генерация случайных волшебников (без window.load)
 var renderWizard = function(wizards) {
   var wizardElement = similarWizardTemplate.cloneNode("true");
@@ -142,6 +148,7 @@ var renderWizard = function(wizards) {
   return wizardElement;
 }*/
 // получаем данные с сервера + модуль load.js
+
 var renderWizard = function(wizards) {
   var wizardElement = similarWizardTemplate.cloneNode("true");
 
@@ -152,15 +159,43 @@ var renderWizard = function(wizards) {
   return wizardElement;
 }
 
-var successHandler = function(wizards) {
+
+var getRank = function(wizard) {
+  var rank = 0;
+
+  if(wizard.colorCoat === wizardCoat.style.fill) {
+    rank += 2;
+  }
+
+  if(wizard.colorEyes === wizardEyes.style.fill) {
+    rank += 1;
+  }
+
+  return rank;
+
+}
+
+var updateWizards = function() {
+  var wizardsSort = wizards.slice().sort(function(left, right) {
+    var rankDiff = getRank(right) - getRank(left);
+    if(rankDiff === 0) {
+      rankDiff = wizards.indexOf(left) - wizards.indexOf(right);
+    }
+    return rankDiff;
+  })
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < 4; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
+    fragment.appendChild(renderWizard(wizardsSort[i]));
   }
 
   similarListElement.appendChild(fragment);
   document.querySelector(".setup-similar").classList.remove("hidden");
+};
+
+var successHandler = function(data) {
+  wizards = data;
+  updateWizards();
 };
 
 var errorHandler = function(errorMessage) {

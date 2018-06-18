@@ -1,6 +1,7 @@
 "use strict";
 
 (function() {
+
     var URL = "https://js.dump.academy/code-and-magick/data";
 
     window.load = function(onSuccess, onError) {
