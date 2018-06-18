@@ -98,6 +98,10 @@ wizardCoat.addEventListener("click", function() {
 
 wizardEyes.addEventListener("click", function(evt) {
   colorizeElement(wizardEyes, ["black", "red", "blue", "yellow", "green"], fillElement);
+  while (similarListElement.firstChild) {
+    similarListElement.removeChild(similarListElement.firstChild);
+  }
+  updateWizards();
 });
 
 fireball.addEventListener("click", function(evt) {
