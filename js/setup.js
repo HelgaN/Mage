@@ -88,20 +88,28 @@ var changeElementBackground = function(element, color) {
  element.style.backgroundColor = color;
 };
 
+var prevTimer;
+
 wizardCoat.addEventListener("click", function() {
   colorizeElement(wizardCoat, ["rgb(101, 137, 164)", "rgb(241, 43, 107)", "rgb(146, 100, 161)", "rgb(56, 159, 117)", "rgb(215, 210, 55)", "rgb(0, 0, 0)"], fillElement);
-  while (similarListElement.firstChild) {
-    similarListElement.removeChild(similarListElement.firstChild);
-  }
-  updateWizards();
+  clearTimeout(prevTimer);
+  prevTimer = setTimeout(function() {
+    while (similarListElement.firstChild) {
+      similarListElement.removeChild(similarListElement.firstChild);
+    }
+    updateWizards();
+  }, 400);
 });
 
 wizardEyes.addEventListener("click", function(evt) {
   colorizeElement(wizardEyes, ["black", "red", "blue", "yellow", "green"], fillElement);
-  while (similarListElement.firstChild) {
-    similarListElement.removeChild(similarListElement.firstChild);
-  }
-  updateWizards();
+  clearTimeout(prevTimer);
+  prevTimer = setTimeout(function() {
+    while (similarListElement.firstChild) {
+      similarListElement.removeChild(similarListElement.firstChild);
+    }
+    updateWizards();
+  }, 400)
 });
 
 fireball.addEventListener("click", function(evt) {
